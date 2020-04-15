@@ -122,6 +122,10 @@
             this.listBox关卡.Font = new System.Drawing.Font("楷体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listBox关卡.FormattingEnabled = true;
             this.listBox关卡.ItemHeight = 18;
+            this.listBox关卡.Items.AddRange(new object[] {
+            "关卡-1",
+            "关卡-2",
+            "关卡-3"});
             this.listBox关卡.Location = new System.Drawing.Point(828, 340);
             this.listBox关卡.Name = "listBox关卡";
             this.listBox关卡.Size = new System.Drawing.Size(104, 184);
