@@ -21,10 +21,10 @@ namespace GameProgrammingProject
 
         public static int 时间间隔 = 500;//控制拖动生成图片的时间间隔，单位为毫秒
         private bool 游戏已开始 = false;//控制无法多开游戏窗口
-
+        public static int 关卡 = 0;//记录玩家的选择的关卡
         private void 初始化_listBox关卡()//默认选择上次退出游戏时的难度，若为初次进入游戏则选择第0项
         {
-
+            listBox关卡.SelectedIndex = 0;  // 默认选择
         }
         
         private void 初始化_radioButton难度()//默认选择上次退出游戏时的难度，若为初次进入游戏则选择普通难度
@@ -63,7 +63,7 @@ namespace GameProgrammingProject
 
         private void listBox关卡_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            关卡 = listBox关卡.SelectedIndex+1;     //为了不从0显示 +1 了
         }
     }
 }
