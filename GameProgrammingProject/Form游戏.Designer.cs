@@ -68,7 +68,7 @@
             this.Name = "Form游戏";
             this.Text = "游戏窗口";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form游戏_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form游戏_FormClosed);
+            //this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form游戏_FormClosed);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseUp);
