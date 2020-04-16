@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label关卡 = new System.Windows.Forms.Label();
             this.label难度 = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label关卡
@@ -50,6 +52,10 @@
             this.label难度.TabIndex = 1;
             this.label难度.Text = "难度:";
             // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // Form游戏
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -61,7 +67,11 @@
             this.MaximizeBox = false;
             this.Name = "Form游戏";
             this.Text = "游戏窗口";
-            this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form游戏_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form游戏_FormClosed);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -71,5 +81,6 @@
 
         private System.Windows.Forms.Label label关卡;
         private System.Windows.Forms.Label label难度;
+        private System.Windows.Forms.Timer timer;
     }
 }
