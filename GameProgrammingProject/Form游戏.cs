@@ -56,10 +56,6 @@ namespace GameProgrammingProject
                 default: return 500;
             }
         }
-        private void Form游戏_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Form初始.游戏窗口已开启 = false;
-        }
 
         private void Form游戏_FormClosing(object sender, FormClosingEventArgs e)//保存游戏进度和难度
         {

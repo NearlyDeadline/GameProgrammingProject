@@ -24,10 +24,13 @@ namespace GameProgrammingProject
             初始化_listBox关卡(关卡索引);
             String 难度 = xnl.Item(1).InnerText;
             初始化_radioButton难度(难度);
+            stage初始.BackgroundMusic = Application.StartupPath + "\\Resources\\" + "toby+fox+-+UNDERTALE+Soundtrack+-+14+Heartache.mp3";
+            this.BackgroundImage = System.Drawing.Image.FromFile(Application.StartupPath + "\\Resources\\" + "Mainmenu.jpg");
+            PlayBGM();
         }
 
+        public static Stage stage初始 = new Stage();
         public static String 当前难度 = "";
-        public static bool 游戏窗口已开启 = false;//控制无法多开游戏窗口
         public static int 被选择关卡 = 0;//记录玩家的选择的关卡
         
         private void 初始化_listBox关卡(int 关卡索引)//默认选择上次退出游戏时的难度，若为初次进入游戏则选择第0项
@@ -51,18 +54,24 @@ namespace GameProgrammingProject
 
         }
 
-        private void 开始游戏按钮_Click(object sender, EventArgs e)
+        private void PlayBGM()          //循环播放背景音乐
         {
-            if (!游戏窗口已开启)
-            {
-                Form游戏 游戏窗口 = new Form游戏();
-                游戏窗口已开启 = true;
-                游戏窗口.Show();
-            }
-            else
-            {
-                MessageBox.Show("游戏已开启，请勿多开窗口", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            this.axWindowsMediaPlayer初始.URL = stage初始.BackgroundMusic;
+            axWindowsMediaPlayer初始.settings.autoStart = true;
+            axWindowsMediaPlayer初始.settings.setMode("loop", true);
+            axWindowsMediaPlayer初始.Ctlcontrols.play();
+        }
+
+        public static void ThreadProc()             //创建游戏窗口函数
+        {
+            Application.Run(new Form游戏());
+        }
+
+        private void 开始游戏按钮_Click(object sender, EventArgs e)       //新建线程保证主窗口结束后程序不关闭
+        {
+            System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ThreadStart(ThreadProc));
+            t.Start();
+            this.Close();
         }
 
         private void 困难难度选项_CheckedChanged(object sender, EventArgs e)
