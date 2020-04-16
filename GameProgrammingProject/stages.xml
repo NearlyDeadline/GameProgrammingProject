@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<stages>
+  <stage index="0">
+    <card index="0">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="1">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="2">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="3">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="4">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="5">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="6">
+      <x></x>
+      <y></y>
+    </card>
+  </stage>
+  <stage index="1">
+    <card index="0">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="1">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="2">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="3">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="4">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="5">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="6">
+      <x></x>
+      <y></y>
+    </card>
+  </stage>
+  <stage index="2">
+    <card index="0">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="1">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="2">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="3">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="4">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="5">
+      <x></x>
+      <y></y>
+    </card>
+    <card index="6">
+      <x></x>
+      <y></y>
+    </card>
+  </stage>
+</stages>
