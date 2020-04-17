@@ -9,6 +9,12 @@ namespace GameProgrammingProject
 {
     public class Stage
     {
+        public Stage()
+        {
+            Answers = new List<Card>();
+            Results = new List<Card>();
+        }
+
         public Image BackgroundImage { get; set; }//背景图案
 
         public String BackgroundMusic { get; set; }//背景音乐

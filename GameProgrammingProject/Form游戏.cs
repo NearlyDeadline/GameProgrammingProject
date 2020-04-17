@@ -37,13 +37,39 @@ namespace GameProgrammingProject
         }
         private void 关卡初始化()
         {
-            //当前关卡 = new Stage();
+            当前关卡 = new Stage();
             /* TODO:
-             * 1.设置当前关卡.BackBackgroundImage，BackgroundMusic，CardPattern变量
-             * 2.显示背景图片，播放背景音乐
-             * 3.根据当前关卡序号，到stages.xml中读取所有卡牌的中心坐标，创建相应的Card实例，将其加入当前关卡.Answers，绘制图案
+             * 1.设置并显示当前关卡.BackgroundImage作为关卡背景图像
+             * 2.设置播放当前关卡.BackgroundMusic作为关卡背景音乐
+             * 以上两步补在该函数开始位置
+             * 3.设置当前关卡.CardPattern作为答案卡牌图像，答案卡牌用黑白色以与结果图片区分
+             * 上述一步补在foreach循环代码中给定位置
              */
-            //计数次数 = 当前关卡.Answers.Count - 1;//最开始按左键生成一张，计数次数减1
+
+
+            XmlDocument stageXml = new XmlDocument();
+            stageXml.Load("stages.xml");
+            XmlElement stageElement = stageXml.DocumentElement;
+            string StrTarget = string.Format("/stages/stage[@index=\"{0}\"]", 当前关卡序号.ToString());
+            XmlNode stageSelected = stageElement.SelectSingleNode(StrTarget);//选取index对应的关卡
+
+            XmlNodeList cards = stageSelected.ChildNodes;
+            Card card = null;
+            XmlElement cardXml = null;
+            XmlNodeList xys = null;//使用ChildNodes属性获取单个Card的x坐标和y坐标，默认Item(0)为x坐标，Item(1)为y坐标
+            foreach(XmlNode eachCard in cards)
+            {
+                card = new Card();
+                cardXml = (XmlElement)eachCard;
+                //卡片索引可通过下述代码获得，留作备用
+                //int 卡片索引 = Convert.ToInt32(cardXml.GetAttribute("index").ToString());
+                xys = cardXml.ChildNodes;
+                card.X = Convert.ToInt32(xys.Item(0).InnerText);
+                card.Y = Convert.ToInt32(xys.Item(1).InnerText);
+                当前关卡.Answers.Add(card);
+                //TODO: 在card.X, card.Y处显示图像：当前关卡.CardPattern
+            }
+            计数次数 = 当前关卡.Answers.Count - 1;//最开始按左键生成一张，计数次数减1
         }
 
         private static int 查询时间间隔(String 难度)//根据难度控制生成图片的时间间隔，单位为毫秒
@@ -59,20 +85,24 @@ namespace GameProgrammingProject
 
         private void Form游戏_FormClosing(object sender, FormClosingEventArgs e)//保存游戏进度和难度
         {
-            XmlDocument record = new XmlDocument();
-            record.Load("settings.xml");
-            XmlElement xe = record.DocumentElement;
+            XmlDocument recordXml = new XmlDocument();
+            recordXml.Load("settings.xml");
+            XmlElement xe = recordXml.DocumentElement;
             string xpath = "/record";
             XmlElement selectedXe = (XmlElement)xe.SelectSingleNode(xpath);
             selectedXe.GetElementsByTagName("stage").Item(0).InnerText = (当前关卡序号 - 1).ToString();
             selectedXe.GetElementsByTagName("difficulty").Item(0).InnerText = Form初始.当前难度;
-            record.Save("settings.xml");
+            recordXml.Save("settings.xml");
         }
 
         private void timer_Tick(object sender, EventArgs e)//计时器
         {
+            if (计数次数 > 0)
+            {
+                DrawResult(Cursor.Position.X, Cursor.Position.Y);
+                计数次数--;
+            }
 
-            DrawResult(Cursor.Position.X, Cursor.Position.Y);
         }
 
         private double GetScore(Card answer, Card result)
@@ -96,7 +126,28 @@ namespace GameProgrammingProject
          * 返回值：无
          */
         {
+            //TODO: 绘制结果图片，用彩色，以与答案图片区分
 
+            Card result = new Card();
+            result.X = x;
+            result.Y = y;
+            当前关卡.Results.Add(result);
+            double 本次得分 = GetScore(当前关卡.Answers.ElementAt(当前关卡.Results.Count - 1), result);
+
+            更新整体分数(本次得分);
+        }
+
+        private void 更新整体分数(double 单次得分)
+        {
+            if (当前关卡.Results.Count == 1)
+            {
+                label整体得分值.Text = 单次得分.ToString();
+            }
+            else
+            {
+                label整体得分值.Text = ((Convert.ToDouble(label整体得分值.Text) + 单次得分) / 2).ToString();
+            }
+            label整体得分值.Refresh();
         }
 
         private void Form游戏_MouseDown(object sender, MouseEventArgs e)

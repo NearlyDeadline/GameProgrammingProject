@@ -16,9 +16,9 @@ namespace GameProgrammingProject
         public Form初始()
         {
             InitializeComponent();
-            XmlDocument record = new XmlDocument();
-            record.Load("settings.xml");
-            XmlNode xn = record.SelectSingleNode("record");
+            XmlDocument recordXml = new XmlDocument();
+            recordXml.Load("settings.xml");
+            XmlNode xn = recordXml.SelectSingleNode("record");
             XmlNodeList xnl = xn.ChildNodes;
             int 关卡索引 = Convert.ToInt32(xnl.Item(0).InnerText);
             初始化_listBox关卡(关卡索引);
@@ -29,16 +29,21 @@ namespace GameProgrammingProject
             PlayBGM();
         }
 
-        public static Stage stage初始 = new Stage();
+        public Stage stage初始 = new Stage();
         public static String 当前难度 = "";
         public static int 被选择关卡 = 0;//记录玩家的选择的关卡
         
         private void 初始化_listBox关卡(int 关卡索引)//默认选择上次退出游戏时的难度，若为初次进入游戏则选择第0项
         {
-            //TODO: 为了获取一共有多少关卡，需要读取stages.xml文件以获取关卡总数
-            listBox关卡.Items.Add("1");
-            listBox关卡.Items.Add("2");
-            listBox关卡.Items.Add("3");
+            XmlDocument stageXml = new XmlDocument();
+            stageXml.Load("stages.xml");
+            XmlNode xn = stageXml.SelectSingleNode("stages");
+            XmlNodeList xnl = xn.ChildNodes;
+            int 关卡数量 = Convert.ToInt32(xnl.Item(0).InnerText);
+            for(int i = 1; i<= 关卡数量; ++i)
+            {
+                listBox关卡.Items.Add(i.ToString());
+            }
             listBox关卡.SelectedIndex = 关卡索引;
         }
         
