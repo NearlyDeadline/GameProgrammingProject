@@ -29,9 +29,10 @@ namespace GameProgrammingProject
             PlayBGM();
         }
 
-        public Stage stage初始 = new Stage();
-        public static String 当前难度 = "";
-        public static int 被选择关卡 = 0;//记录玩家的选择的关卡
+        private Stage stage初始 = new Stage();
+        private static String 当前难度 = "";
+        private static int 被选择关卡 = 0;//记录玩家的选择的关卡
+        private static int 关卡数量 = 0;
         
         private void 初始化_listBox关卡(int 关卡索引)//默认选择上次退出游戏时的难度，若为初次进入游戏则选择第0项
         {
@@ -39,7 +40,7 @@ namespace GameProgrammingProject
             stageXml.Load("stages.xml");
             XmlNode xn = stageXml.SelectSingleNode("stages");
             XmlNodeList xnl = xn.ChildNodes;
-            int 关卡数量 = Convert.ToInt32(xnl.Item(0).InnerText);
+            关卡数量 = Convert.ToInt32(xnl.Item(0).InnerText);
             for(int i = 1; i<= 关卡数量; ++i)
             {
                 listBox关卡.Items.Add(i.ToString());
@@ -69,7 +70,7 @@ namespace GameProgrammingProject
 
         public static void ThreadProc()             //创建游戏窗口函数
         {
-            Application.Run(new Form游戏());
+            Application.Run(new Form游戏(被选择关卡, 关卡数量, 当前难度));
         }
 
         private void 开始游戏按钮_Click(object sender, EventArgs e)       //新建线程保证主窗口结束后程序不关闭
