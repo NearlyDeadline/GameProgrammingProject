@@ -32,8 +32,6 @@ namespace GameProgrammingProject
             InitializeComponent();
             关卡初始化();
             初始化完成 = true;
-            //TODO: 提示玩家可以开始游戏
-
         }
         private void 关卡初始化()
         {
@@ -44,8 +42,6 @@ namespace GameProgrammingProject
              * 1.设置并显示当前关卡.BackgroundImage作为关卡背景图像
              * 2.设置播放当前关卡.BackgroundMusic作为关卡背景音乐
              * 以上两步补在该函数开始位置
-             * 3.设置当前关卡.CardPattern作为答案卡牌图像，答案卡牌用黑白色以与结果图片区分
-             * 上述一步补在foreach循环代码中给定位置
              */
 
 
@@ -53,8 +49,7 @@ namespace GameProgrammingProject
             stageXml.Load("stages.xml");
             XmlElement stageElement = stageXml.DocumentElement;
             string StrTarget = string.Format("/stages/stage[@index=\"{0}\"]", 当前关卡序号.ToString());
-            XmlNode stageSelected = stageElement.SelectSingleNode(StrTarget);//选取index对应的关卡
-
+            XmlNode stageSelected = stageElement.SelectSingleNode(StrTarget);//选取index对应的关卡           
             XmlNodeList cards = stageSelected.ChildNodes;
             Card card = null;
             XmlElement cardXml = null;
@@ -69,7 +64,6 @@ namespace GameProgrammingProject
                 card.X = Convert.ToInt32(xys.Item(0).InnerText);
                 card.Y = Convert.ToInt32(xys.Item(1).InnerText);
                 当前关卡.Answers.Add(card);
-                //TODO: 在card.X, card.Y处显示图像：当前关卡.CardPattern
             }
             计数次数 = 当前关卡.Answers.Count - 1;//最开始按左键生成一张，计数次数减1
         }
@@ -128,8 +122,8 @@ namespace GameProgrammingProject
          * 返回值：无
          */
         {
-            //TODO: 绘制结果图片，用彩色，以与答案图片区分
-
+            Graphics g = this.CreateGraphics();
+            g.DrawImage(当前关卡.卡牌图案, x, y);
             Card result = new Card();
             result.X = x;
             result.Y = y;
@@ -162,11 +156,6 @@ namespace GameProgrammingProject
             }
         }
 
-        private void Form游戏_MouseMove(object sender, MouseEventArgs e)
-        {
-            //似乎没用，通过Cursor可以得到鼠标的坐标，直接把代码移到Timer_tick方法里就行
-        }
-
         private void Form游戏_MouseUp(object sender, MouseEventArgs e)
         {
             if (初始化完成 && 已按下鼠标按钮)
@@ -191,9 +180,18 @@ namespace GameProgrammingProject
                     }
                 }
                 //else: 重新开始本关卡
-                this.Refresh();
+                timer.Enabled = false;
                 关卡初始化();
+                this.Refresh();
                 初始化完成 = true;
+            }
+        }
+
+        private void Form游戏_Paint(object sender, PaintEventArgs e)
+        {
+            foreach (Card card in 当前关卡.Answers)//答案图片用黑白
+            {
+                e.Graphics.DrawImage(当前关卡.卡牌图案黑白, card.X, card.Y);
             }
         }
     }

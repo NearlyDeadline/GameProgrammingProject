@@ -24,12 +24,14 @@ namespace GameProgrammingProject
             初始化_listBox关卡(关卡索引);
             String 难度 = xnl.Item(1).InnerText;
             初始化_radioButton难度(难度);
-            stage初始.BackgroundMusic = Application.StartupPath + "\\Resources\\" + "toby+fox+-+UNDERTALE+Soundtrack+-+14+Heartache.mp3";
+            BackgroundMusic = Application.StartupPath + "\\Resources\\" + "toby+fox+-+UNDERTALE+Soundtrack+-+14+Heartache.mp3";
             this.BackgroundImage = System.Drawing.Image.FromFile(Application.StartupPath + "\\Resources\\" + "Mainmenu.jpg");
             PlayBGM();
+            label游戏说明.Text = "欢迎体验简陋的游戏。\n请从给定的轨迹中推算起点和终点，在起点处按下鼠标左键，" +
+                "按照一定的速度依次经过各个图片，最终到达终点。每隔一段时间（取决于难度）会自动在你的鼠标处绘制一张残影。";
         }
+        private String BackgroundMusic { get; set; }//背景音乐
 
-        private Stage stage初始 = new Stage();
         private static String 当前难度 = "";
         private static int 被选择关卡 = 0;//记录玩家的选择的关卡
         private static int 关卡数量 = 0;
@@ -62,7 +64,7 @@ namespace GameProgrammingProject
 
         private void PlayBGM()          //循环播放背景音乐
         {
-            this.axWindowsMediaPlayer初始.URL = stage初始.BackgroundMusic;
+            this.axWindowsMediaPlayer初始.URL = BackgroundMusic;
             axWindowsMediaPlayer初始.settings.autoStart = true;
             axWindowsMediaPlayer初始.settings.setMode("loop", true);
             axWindowsMediaPlayer初始.Ctlcontrols.play();
@@ -98,6 +100,11 @@ namespace GameProgrammingProject
         private void listBox关卡_SelectedIndexChanged(object sender, EventArgs e)
         {
             被选择关卡 = listBox关卡.SelectedIndex + 1;//为了不从0显示 +1 了
+        }
+
+        private void button开发人员_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("成员：黄正坤、孙博文、李一鸣", "小组成员", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

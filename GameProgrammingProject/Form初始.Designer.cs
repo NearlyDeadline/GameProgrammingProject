@@ -39,6 +39,7 @@
             this.listBox关卡 = new System.Windows.Forms.ListBox();
             this.label游戏名称 = new System.Windows.Forms.Label();
             this.axWindowsMediaPlayer初始 = new AxWMPLib.AxWindowsMediaPlayer();
+            this.label游戏说明 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer初始)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,6 +64,7 @@
             this.button开发人员.TabIndex = 1;
             this.button开发人员.Text = "开发人员";
             this.button开发人员.UseVisualStyleBackColor = true;
+            this.button开发人员.Click += new System.EventHandler(this.button开发人员_Click);
             // 
             // label选择难度
             // 
@@ -152,12 +154,24 @@
             this.axWindowsMediaPlayer初始.TabIndex = 9;
             this.axWindowsMediaPlayer初始.Visible = false;
             // 
+            // label游戏说明
+            // 
+            this.label游戏说明.AutoEllipsis = true;
+            this.label游戏说明.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label游戏说明.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.label游戏说明.Location = new System.Drawing.Point(912, 50);
+            this.label游戏说明.Name = "label游戏说明";
+            this.label游戏说明.Size = new System.Drawing.Size(275, 214);
+            this.label游戏说明.TabIndex = 10;
+            this.label游戏说明.Text = "label1";
+            // 
             // Form初始
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1262, 673);
+            this.Controls.Add(this.label游戏说明);
             this.Controls.Add(this.axWindowsMediaPlayer初始);
             this.Controls.Add(this.label游戏名称);
             this.Controls.Add(this.listBox关卡);
@@ -190,6 +204,7 @@
         private System.Windows.Forms.ListBox listBox关卡;
         private System.Windows.Forms.Label label游戏名称;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer初始;
+        private System.Windows.Forms.Label label游戏说明;
     }
 }
 
