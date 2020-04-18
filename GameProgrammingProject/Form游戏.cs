@@ -15,28 +15,30 @@ namespace GameProgrammingProject
     {
         private static int 时间间隔 = 500;//控制拖动生成图片的时间间隔，单位为毫秒
         private static int 当前关卡序号 = 0;//记录玩家的选择的关卡
+        private static int 关卡数 = 0;
+        private static String 当前难度 = "";
 
         private bool 初始化完成 = false;//初始化未完成时，点击、拖动鼠标无效果
         private bool 已按下鼠标按钮 = false;//初始化完成后，按下鼠标按钮时，开始绘制结果图片
         private Stage 当前关卡;
         private int 计数次数 = 0;
-        public Form游戏()
+        public Form游戏(int 被选择关卡, int 关卡数, String 难度)
         {
             初始化完成 = false;
-            时间间隔 = Form游戏.查询时间间隔(Form初始.当前难度);
-            当前关卡序号 = Form初始.被选择关卡;
+            时间间隔 = Form游戏.查询时间间隔(难度);
+            当前关卡序号 = 被选择关卡;
+            Form游戏.关卡数 = 关卡数;
+            当前难度 = 难度;
             InitializeComponent();
-            label关卡.Text = "关卡：" + 当前关卡序号;
-            label难度.Text = "难度：" + Form初始.当前难度;
             关卡初始化();
-
             初始化完成 = true;
-
             //TODO: 提示玩家可以开始游戏
 
         }
         private void 关卡初始化()
         {
+            label关卡.Text = "关卡：" + 当前关卡序号;
+            label难度.Text = "难度：" + 当前难度;
             当前关卡 = new Stage();
             /* TODO:
              * 1.设置并显示当前关卡.BackgroundImage作为关卡背景图像
@@ -91,7 +93,7 @@ namespace GameProgrammingProject
             string xpath = "/record";
             XmlElement selectedXe = (XmlElement)xe.SelectSingleNode(xpath);
             selectedXe.GetElementsByTagName("stage").Item(0).InnerText = (当前关卡序号 - 1).ToString();
-            selectedXe.GetElementsByTagName("difficulty").Item(0).InnerText = Form初始.当前难度;
+            selectedXe.GetElementsByTagName("difficulty").Item(0).InnerText = 当前难度;
             recordXml.Save("settings.xml");
         }
 
@@ -133,7 +135,6 @@ namespace GameProgrammingProject
             result.Y = y;
             当前关卡.Results.Add(result);
             double 本次得分 = GetScore(当前关卡.Answers.ElementAt(当前关卡.Results.Count - 1), result);
-
             更新整体分数(本次得分);
         }
 
@@ -171,9 +172,28 @@ namespace GameProgrammingProject
             if (初始化完成 && 已按下鼠标按钮)
             {
                 已按下鼠标按钮 = false;
-                
-                //TODO: 1.提示游戏结束，计算总成绩
-                //      2.选择再次挑战/下一关/退出
+                初始化完成 = false;
+                if (MessageBox.Show("您的成绩为：" + label整体得分值.Text + "，是否进入下一关？"
+                    , "恭喜完成关卡", MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    //进入下一关卡
+                    if (当前关卡序号 == 关卡数)//通关，退出程序
+                    {
+                        MessageBox.Show("恭喜完成" + 当前难度 + "难度下所有关卡", "", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                        当前关卡序号 = 1;
+                        this.Close();
+                    }
+                    else
+                    {
+                        当前关卡序号++;
+                    }
+                }
+                //else: 重新开始本关卡
+                this.Refresh();
+                关卡初始化();
+                初始化完成 = true;
             }
         }
     }
