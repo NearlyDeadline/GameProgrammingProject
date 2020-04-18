@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 
 namespace GameProgrammingProject
 {
@@ -13,14 +14,40 @@ namespace GameProgrammingProject
         {
             Answers = new List<Card>();
             Results = new List<Card>();
+            DirectoryInfo imageFolder = new DirectoryInfo(卡牌图案文件夹路径);
+            FileInfo[] imageFiles = imageFolder.GetFiles();
+            图案数量 = imageFiles.Length;
+            选取随机图案(imageFiles);
+            生成黑白答案图片();
         }
 
-        public Image BackgroundImage { get; set; }//背景图案
+        private void 选取随机图案(FileInfo[] imageFiles)
+        {
+            int index = new Random().Next(0, 图案数量 - 1);
+            卡牌图案 = Image.FromFile(卡牌图案文件夹路径 + imageFiles[index].Name);
+        }
 
-        public String BackgroundMusic { get; set; }//背景音乐
+        private void 生成黑白答案图片()
+        {
+            Bitmap temp = new Bitmap(卡牌图案);
+            int width = temp.Width;
+            int height = temp.Height;
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Color color = temp.GetPixel(x, y);
+                    int value = (color.R + color.G + color.B) / 3;
+                    temp.SetPixel(x, y, Color.FromArgb(value, value, value));
+                }
+            }
+            卡牌图案黑白 = Image.FromHbitmap(temp.GetHbitmap());
+        }
+        private readonly int 图案数量;
+        private readonly String 卡牌图案文件夹路径 = ".\\Resources\\Card\\";
+        public Image 卡牌图案 { get; set; }//彩色的图案，用于绘制result结果图片
 
-        public Image CardPattern { get; set; }//卡牌图案
-
+        public Image 卡牌图案黑白 { get; set; }//黑白的图案，用于绘制answer答案图片
         public List<Card> Answers { get; set; }//答案图片
 
         public List<Card> Results { get; set; }//结果图片

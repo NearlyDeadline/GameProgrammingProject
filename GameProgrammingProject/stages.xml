@@ -3,92 +3,92 @@
   <number>3</number>
   <stage index="1">
     <card index="0">
-      <x>200</x>
-      <y>300</y>
+      <x>150</x>
+      <y>150</y>
     </card>
     <card index="1">
-      <x>400</x>
-      <y>300</y>
+      <x>200</x>
+      <y>150</y>
     </card>
     <card index="2">
-      <x>600</x>
-      <y>300</y>
+      <x>250</x>
+      <y>150</y>
     </card>
     <card index="3">
-      <x>800</x>
-      <y>300</y>
+      <x>300</x>
+      <y>150</y>
     </card>
     <card index="4">
-      <x>800</x>
-      <y>350</y>
+      <x>350</x>
+      <y>150</y>
     </card>
     <card index="5">
-      <x>800</x>
-      <y>400</y>
+      <x>400</x>
+      <y>150</y>
     </card>
     <card index="6">
-      <x>800</x>
-      <y>600</y>
+      <x>450</x>
+      <y>150</y>
     </card>
   </stage>
   <stage index="2">
     <card index="0">
-      <x>640</x>
-      <y>360</y>
+      <x>100</x>
+      <y>100</y>
     </card>
     <card index="1">
-      <x>700</x>
-      <y>360</y>
+      <x>200</x>
+      <y>100</y>
     </card>
     <card index="2">
-      <x>800</x>
-      <y>360</y>
+      <x>300</x>
+      <y>100</y>
     </card>
     <card index="3">
-      <x>800</x>
-      <y>300</y>
+      <x>400</x>
+      <y>100</y>
     </card>
     <card index="4">
-      <x>800</x>
-      <y>250</y>
+      <x>400</x>
+      <y>150</y>
     </card>
     <card index="5">
-      <x>750</x>
-      <y>250</y>
+      <x>400</x>
+      <y>200</y>
     </card>
     <card index="6">
-      <x>600</x>
-      <y>250</y>
+      <x>800</x>
+      <y>200</y>
     </card>
   </stage>
   <stage index="3">
     <card index="0">
-      <x>640</x>
-      <y>300</y>
+      <x>800</x>
+      <y>200</y>
     </card>
     <card index="1">
-      <x>440</x>
-      <y>300</y>
+      <x>400</x>
+      <y>200</y>
     </card>
     <card index="2">
-      <x>840</x>
-      <y>300</y>
+      <x>400</x>
+      <y>150</y>
     </card>
     <card index="3">
-      <x>840</x>
-      <y>400</y>
+      <x>400</x>
+      <y>100</y>
     </card>
     <card index="4">
-      <x>840</x>
-      <y>500</y>
+      <x>300</x>
+      <y>100</y>
     </card>
     <card index="5">
-      <x>840</x>
-      <y>600</y>
+      <x>200</x>
+      <y>100</y>
     </card>
     <card index="6">
-      <x>340</x>
-      <y>600</y>
+      <x>100</x>
+      <y>100</y>
     </card>
   </stage>
 </stages>
