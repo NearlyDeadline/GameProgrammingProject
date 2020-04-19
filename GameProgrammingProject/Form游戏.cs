@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using System.Runtime.InteropServices;
 
 namespace GameProgrammingProject
 {
@@ -22,6 +18,9 @@ namespace GameProgrammingProject
         private bool 已按下鼠标按钮 = false;//初始化完成后，按下鼠标按钮时，开始绘制结果图片
         private Stage 当前关卡;
         private int 计数次数 = 0;
+        [DllImport("winmm")]
+        public static extern bool PlaySound(string szSound, int hMod, int i);
+
         public Form游戏(int 被选择关卡, int 关卡数, String 难度)
         {
             初始化完成 = false;
@@ -32,6 +31,7 @@ namespace GameProgrammingProject
             InitializeComponent();
             关卡初始化();
             初始化完成 = true;
+            label整体得分值.Text = "0";
         }
         private void 关卡初始化()
         {
@@ -63,9 +63,10 @@ namespace GameProgrammingProject
                 xys = cardXml.ChildNodes;
                 card.X = Convert.ToInt32(xys.Item(0).InnerText);
                 card.Y = Convert.ToInt32(xys.Item(1).InnerText);
-                当前关卡.Answers.Add(card);
+                当前关卡.答案图片.Add(card);
             }
-            计数次数 = 当前关卡.Answers.Count - 1;//最开始按左键生成一张，计数次数减1
+            计数次数 = 当前关卡.答案图片.Count - 1;//最开始按左键生成一张，计数次数减1
+            单次得分上限 = 100.0 / 当前关卡.答案图片.Count;
         }
 
         private static int 查询时间间隔(String 难度)//根据难度控制生成图片的时间间隔，单位为毫秒
@@ -95,23 +96,76 @@ namespace GameProgrammingProject
         {
             if (计数次数 > 0)
             {
-                DrawResult(Cursor.Position.X, Cursor.Position.Y);
+                绘制结果图片(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y);
                 计数次数--;
             }
 
         }
 
-        private double GetScore(Card answer, Card result)
+        private readonly String 得分资源文件夹路径 = ".\\Resources\\Score\\";
+        private double 单次得分上限;
         /*
-         * 参数：answer为给定的一张答案图片，result为玩家现场绘制一张的结果图片
-         * 过程：计算单次的得分，根据得分显示Perfect/Excellent/Miss等提示字样，播放相应音效
-         * 返回值：单次的得分，用于后续计算整体分数
+         * 总体得分算法： 
+         * 用100去除以卡牌数，得到单次得分上限
+         * 根据每次的评价，获得一个比例系数（0~1），用这个比例系数乘以得分上限，即为单次得分
+         * 总体得分即为单次得分之和
+         * 提前结束游戏，之后的单次得分均为0
+         */
+
+        private void 得分(Card answer, Card result, int x, int y)
+        /*
+         * 参数：answer为给定的一张答案图片，result为玩家现场绘制一张的结果图片，x和y为鼠标位置
+         * 过程：1.计算单次的得分，根据得分显示Perfect/Excellent/Miss等提示字样，播放相应音效
+         *       2.更新整体得分
+         * 返回值：无
          */
         {
-            return 0;
+            double 宽度偏离度 = Convert.ToDouble(Math.Abs(answer.X - result.X)) / 当前关卡.卡牌图案.Width;
+            double 高度偏离度 = Convert.ToDouble(Math.Abs(answer.Y - result.Y)) / 当前关卡.卡牌图案.Height;
+            Image 待绘制特效;
+            double 单次得分比例;
+            string 待播放音效;
+            if (宽度偏离度 <= Object.Score.perfect最大偏离度 && 高度偏离度 <= Object.Score.perfect最大偏离度)
+            {//perfect
+                待绘制特效 = Image.FromFile(得分资源文件夹路径 + "perfect.png");
+                待播放音效 = 得分资源文件夹路径 + "perfect.wav";
+                单次得分比例 = 1;
+            }
+            else if (宽度偏离度 <= Object.Score.amazing最大偏离度 && 高度偏离度 <= Object.Score.amazing最大偏离度)
+            {//amazing
+                待绘制特效 = Image.FromFile(得分资源文件夹路径 + "amazing.png");
+                待播放音效 = 得分资源文件夹路径 + "amazing.wav";
+                单次得分比例 = 1 - (宽度偏离度 + 高度偏离度) / 2;
+            }
+            else if (宽度偏离度 <= Object.Score.excellent最大偏离度 && 高度偏离度 <= Object.Score.excellent最大偏离度)
+            {//excellent
+                待绘制特效 = Image.FromFile(得分资源文件夹路径 + "excellent.png");
+                待播放音效 = 得分资源文件夹路径 + "excellent.wav";
+                单次得分比例 = 1 - (宽度偏离度 + 高度偏离度) / 2;
+            }
+            else// miss
+            {
+                待绘制特效 = Image.FromFile(得分资源文件夹路径 + "miss.png");
+                待播放音效 = 得分资源文件夹路径 + "miss.wav";
+                单次得分比例 = 0;
+            }
+            PlaySound(待播放音效, 0, 1);
+            Graphics g = this.CreateGraphics();
+            g.DrawImage(待绘制特效, x, y);
+            更新整体分数(单次得分比例 * 单次得分上限);
         }
 
-        private void DrawResult(int x, int y)
+        private Point 计算左上角(int x, int y)
+        /*
+         * 参数：鼠标位置的x,y坐标
+         * 过程：1.默认绘制点是鼠标位置的左上角，这个方法传入中心坐标，计算左上角坐标
+         * 返回值：中心坐标点
+         */
+        {
+            return new Point(x - 当前关卡.卡牌图案.Width / 2, y - 当前关卡.卡牌图案.Height / 2);
+        }
+
+        private void 绘制结果图片(int x, int y)
         /*
          * 参数：鼠标位置的x,y坐标
          * 过程：1.以参数为中心，绘制一张result结果图片
@@ -123,33 +177,27 @@ namespace GameProgrammingProject
          */
         {
             Graphics g = this.CreateGraphics();
-            g.DrawImage(当前关卡.卡牌图案, x, y);
+            Point 左上角 = 计算左上角(x, y);
+            g.DrawImage(当前关卡.卡牌图案, 左上角);
+            //TODO: 把加入数组的代码用另一个线程接管
             Card result = new Card();
-            result.X = x;
-            result.Y = y;
-            当前关卡.Results.Add(result);
-            double 本次得分 = GetScore(当前关卡.Answers.ElementAt(当前关卡.Results.Count - 1), result);
-            更新整体分数(本次得分);
+            result.X = 左上角.X;
+            result.Y = 左上角.Y;
+            当前关卡.结果图片.Add(result);
+            //TODO: 把得分函数用另一个线程接管
+            得分(当前关卡.答案图片.ElementAt(当前关卡.结果图片.Count - 1), result, x, y);
         }
 
         private void 更新整体分数(double 单次得分)
         {
-            if (当前关卡.Results.Count == 1)
-            {
-                label整体得分值.Text = 单次得分.ToString();
-            }
-            else
-            {
-                label整体得分值.Text = ((Convert.ToDouble(label整体得分值.Text) + 单次得分) / 2).ToString();
-            }
-            label整体得分值.Refresh();
+            label整体得分值.Text = Convert.ToInt32((Convert.ToInt32(label整体得分值.Text) + 单次得分)).ToString();
         }
 
         private void Form游戏_MouseDown(object sender, MouseEventArgs e)
         {
             if (初始化完成)
             {
-                DrawResult(e.X, e.Y);
+                绘制结果图片(e.X, e.Y);
                 已按下鼠标按钮 = true;
                 timer.Interval = 时间间隔;
                 timer.Enabled = true;
@@ -158,6 +206,11 @@ namespace GameProgrammingProject
 
         private void Form游戏_MouseUp(object sender, MouseEventArgs e)
         {
+            if (计数次数 > 0)
+            {
+                timer.Enabled = false;
+                label整体得分值.Text = Convert.ToInt32((Convert.ToDouble(label整体得分值.Text) / 计数次数)).ToString();
+            }
             if (初始化完成 && 已按下鼠标按钮)
             {
                 已按下鼠标按钮 = false;
@@ -180,6 +233,7 @@ namespace GameProgrammingProject
                     }
                 }
                 //else: 重新开始本关卡
+                label整体得分值.Text = "0";
                 timer.Enabled = false;
                 关卡初始化();
                 this.Refresh();
@@ -189,7 +243,7 @@ namespace GameProgrammingProject
 
         private void Form游戏_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Card card in 当前关卡.Answers)//答案图片用黑白
+            foreach (Card card in 当前关卡.答案图片)//答案图片用黑白
             {
                 e.Graphics.DrawImage(当前关卡.卡牌图案黑白, card.X, card.Y);
             }
