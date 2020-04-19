@@ -138,11 +138,11 @@
             // 
             this.label游戏名称.AutoSize = true;
             this.label游戏名称.Font = new System.Drawing.Font("微软雅黑", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label游戏名称.Location = new System.Drawing.Point(468, 62);
+            this.label游戏名称.Location = new System.Drawing.Point(417, 65);
             this.label游戏名称.Name = "label游戏名称";
-            this.label游戏名称.Size = new System.Drawing.Size(273, 78);
+            this.label游戏名称.Size = new System.Drawing.Size(390, 78);
             this.label游戏名称.TabIndex = 8;
-            this.label游戏名称.Text = "游戏名称";
+            this.label游戏名称.Text = "Undernotale";
             // 
             // axWindowsMediaPlayer初始
             // 
@@ -185,7 +185,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form初始";
-            this.Text = "初始窗口";
+            this.Text = "Undernotale";
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer初始)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

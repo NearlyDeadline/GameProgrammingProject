@@ -106,7 +106,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form游戏";
-            this.Text = "游戏窗口";
+            this.Text = "Undernotale";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form游戏_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form游戏_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form游戏_MouseDown);
