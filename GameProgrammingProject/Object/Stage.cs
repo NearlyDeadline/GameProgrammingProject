@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameProgrammingProject
 {
@@ -12,8 +9,8 @@ namespace GameProgrammingProject
     {
         public Stage()
         {
-            Answers = new List<Card>();
-            Results = new List<Card>();
+            答案图片 = new List<Card>();
+            结果图片 = new List<Card>();
             DirectoryInfo imageFolder = new DirectoryInfo(卡牌图案文件夹路径);
             FileInfo[] imageFiles = imageFolder.GetFiles();
             图案数量 = imageFiles.Length;
@@ -48,9 +45,9 @@ namespace GameProgrammingProject
         public Image 卡牌图案 { get; set; }//彩色的图案，用于绘制result结果图片
 
         public Image 卡牌图案黑白 { get; set; }//黑白的图案，用于绘制answer答案图片
-        public List<Card> Answers { get; set; }//答案图片
+        public List<Card> 答案图片 { get; set; }//答案图片
 
-        public List<Card> Results { get; set; }//结果图片
+        public List<Card> 结果图片 { get; set; }//结果图片
         
     }
 }
