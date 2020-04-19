@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Xml;
+using System.Threading;
 
 namespace GameProgrammingProject
 {
@@ -71,6 +72,8 @@ namespace GameProgrammingProject
         private void 开始游戏按钮_Click(object sender, EventArgs e)       //新建线程保证主窗口结束后程序不关闭
         {
             System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ThreadStart(ThreadProc));
+            t.SetApartmentState(ApartmentState.STA);
+
             t.Start();
             this.Close();
         }

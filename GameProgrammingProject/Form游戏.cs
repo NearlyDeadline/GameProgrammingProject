@@ -14,6 +14,8 @@ namespace GameProgrammingProject
         private static int 关卡数 = 0;
         private static String 当前难度 = "";
 
+        private String BackgroundMusic { get; set; }//背景音乐
+
         private bool 初始化完成 = false;//初始化未完成时，点击、拖动鼠标无效果
         private bool 已按下鼠标按钮 = false;//初始化完成后，按下鼠标按钮时，开始绘制结果图片
         private Stage 当前关卡;
@@ -29,6 +31,9 @@ namespace GameProgrammingProject
             Form游戏.关卡数 = 关卡数;
             当前难度 = 难度;
             InitializeComponent();
+            BackgroundMusic = Application.StartupPath + "\\Resources\\" + "toby+fox+-+UNDERTALE+Soundtrack+-+100+MEGALOVANIA.mp3";
+            this.BackgroundImage = System.Drawing.Image.FromFile(Application.StartupPath + "\\Resources\\" + "Mainmenu.jpg");
+            PlayBGM();
             关卡初始化();
             初始化完成 = true;
             label整体得分值.Text = "0";
@@ -188,6 +193,13 @@ namespace GameProgrammingProject
             得分(当前关卡.答案图片.ElementAt(当前关卡.结果图片.Count - 1), result, x, y);
         }
 
+        private void PlayBGM()          //循环播放背景音乐
+        {
+            this.axWindowsMediaPlayer游戏.URL = BackgroundMusic;
+            axWindowsMediaPlayer游戏.settings.autoStart = true;
+            axWindowsMediaPlayer游戏.settings.setMode("loop", true);
+            axWindowsMediaPlayer游戏.Ctlcontrols.play();
+        }
         private void 更新整体分数(double 单次得分)
         {
             label整体得分值.Text = Convert.ToInt32((Convert.ToInt32(label整体得分值.Text) + 单次得分)).ToString();
